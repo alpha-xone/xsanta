@@ -25,7 +25,7 @@ In python:
 
     >>> invited = [
     ...     'Iron Man', 'Captain America', 'Thanos', 'Hulk',
-    ...    'Black Widow', 'Thor', 'Loki', 'Wanda Maximoff',
+    ...     'Black Widow', 'Thor', 'Loki', 'Wanda Maximoff',
     ... ]
     >>> excluded = [
     ...     ('Iron Man', 'Captain America'),
