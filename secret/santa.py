@@ -2,7 +2,6 @@ import random
 import fire
 
 from typing import List, Tuple
-from xone import utils
 
 MUTUAL_EXC = '_mutual_exc_'
 EXCLUDED = '_excluded_'
@@ -130,11 +129,11 @@ def graph(pairs: List[Tuple[str, str]], emoji=True) -> list:
         True
     """
     cp = []
-    while len(utils.flatten(cp, unique=True)) < len(pairs):
+    while len(set(flatten(cp))) < len(pairs):
         cp.append(
             chain(pairs=[
                 (k, v) for k, v in pairs
-                if k not in utils.flatten(cp)
+                if k not in flatten(cp)
             ])
         )
     sep = ' 🎁 >> ' if emoji else ' >> '
@@ -153,6 +152,24 @@ def run(candidates: list, excluded: list = None, emoji=True):
     pairs = gen_pairs(candidates=candidates, excluded=excluded)
     for c in graph(pairs=pairs, emoji=emoji):
         print(c)
+
+
+def flatten(iterable):
+    """
+    Flatten any array of items to list
+
+    Examples:
+        >>> list(flatten(['ab', ['cd'], ['xy', 'zz']]))
+        ['ab', 'cd', 'xy', 'zz']
+        >>> list(flatten(['ab', ['xy', 'zz']]))
+        ['ab', 'xy', 'zz']
+    """
+    from collections.abc import Iterable
+
+    for elm in iterable:
+        if isinstance(elm, Iterable) and not isinstance(elm, str):
+            yield from flatten(elm)
+        else: yield elm
 
 
 if __name__ == '__main__':
