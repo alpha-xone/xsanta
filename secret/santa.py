@@ -4,13 +4,10 @@ import fire
 from typing import List, Tuple
 from xone import utils
 
-from secret import __version__
-
 MUTUAL_EXC = '_mutual_exc_'
 EXCLUDED = '_excluded_'
 
 __all__ = [
-    '__version__',
     'gen_pairs',
     'graph',
     'run',
@@ -144,15 +141,17 @@ def graph(pairs: List[Tuple[str, str]], emoji=True) -> list:
     return [sep.join(arrow) for arrow in cp]
 
 
-def run(candidates: list, excluded: list = None):
+def run(candidates: list, excluded: list = None, emoji=True):
     """
     Run generator directly
 
     Args:
         candidates: list of candidates
         excluded: list of excluded groups
+        emoji: show emoji or not
     """
-    for c in graph(gen_pairs(candidates=candidates, excluded=excluded)):
+    pairs = gen_pairs(candidates=candidates, excluded=excluded)
+    for c in graph(pairs=pairs, emoji=emoji):
         print(c)
 
 
