@@ -33,14 +33,14 @@ def parse_version(package):
 
 # -- Project information -----------------------------------------------------
 
-project = 'xbbg'
-copyright = '2018, Alpha x1'
+project = 'xsanta'
+copyright = '2020, Alpha x1'
 author = 'Alpha x1'
 
 # The short X.Y version
 version = ''
 # The full version, including alpha/beta/rc tags
-release = parse_version(project)
+release = parse_version('secret')
 
 # -- General configuration ---------------------------------------------------
 
@@ -126,7 +126,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'xbbgdoc'
+htmlhelp_basename = 'xsantadoc'
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -152,7 +152,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [(
-    master_doc, 'xbbg.tex', 'xbbg Documentation', 'Alpha x1', 'manual'
+    master_doc, 'xsanta.tex', 'xsanta Documentation', 'Alpha x1', 'manual'
 )]
 
 # -- Options for manual page output ------------------------------------------
@@ -160,7 +160,7 @@ latex_documents = [(
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [(
-    master_doc, 'xbbg', 'xbbg Documentation', [author], 1
+    master_doc, 'xsanta', 'xsanta Documentation', [author], 1
 )]
 
 # -- Options for Texinfo output ----------------------------------------------
@@ -169,8 +169,8 @@ man_pages = [(
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [(
-    master_doc, 'xbbg', 'xbbg Documentation',
-    author, 'xbbg', 'One line description of project.', 'Miscellaneous'
+    master_doc, 'xsanta', 'xbbg Documentation',
+    author, 'xsanta', 'One line description of project.', 'Miscellaneous'
 )]
 
 # -- Options for Epub output -------------------------------------------------
