@@ -108,12 +108,13 @@ def chain(pairs: List[Tuple[str, str]]) -> list:
     return res
 
 
-def graph(pairs: List[Tuple[str, str]]) -> list:
+def graph(pairs: List[Tuple[str, str]], emoji=True) -> list:
     """
     Directed graph of generated pairs
 
     Args:
         pairs: list of two-element tuples
+        emoji: show emoji or not
 
     Returns:
         list of string
@@ -139,7 +140,8 @@ def graph(pairs: List[Tuple[str, str]]) -> list:
                 if k not in utils.flatten(cp)
             ])
         )
-    return [' 🎁 >> '.join(arrow) for arrow in cp]
+    sep = ' 🎁 >> ' if emoji else ' >> '
+    return [sep.join(arrow) for arrow in cp]
 
 
 def run(candidates: list, excluded: list = None):
