@@ -1,6 +1,8 @@
 import random
 import fire
+import emails
 
+from collections import namedtuple
 from typing import List, Tuple
 
 MUTUAL_EXC = '_mutual_exc_'
@@ -10,7 +12,10 @@ __all__ = [
     'gen_pairs',
     'graph',
     'run',
+    'run_and_email',
 ]
+
+Response = namedtuple('Response', ['pairs', 'email'])
 
 
 def verify_pair(sender: str, receiver: str) -> bool:
@@ -152,6 +157,92 @@ def run(candidates: list, excluded: list = None, emoji=True):
     pairs = gen_pairs(candidates=candidates, excluded=excluded)
     for c in graph(pairs=pairs, emoji=emoji):
         print(c)
+
+
+def email_sender(sender_email: str, receiver_name: str, admin: dict):
+    """
+    Notify sender who's his/her receiver
+
+    Args:
+        sender_email: email address of the sender
+        receiver_name: receiver's name
+        admin: email settings of the administrator
+
+    Returns:
+        email response - status_code == 250 if sent successfully
+    """
+    subject = (
+        admin.pop('subject', 'Your Destiny is ...')
+        .replace('[receiver]', receiver_name)
+    )
+
+    body = (
+        admin.pop('body', '')
+        .replace('[receiver]', receiver_name)
+    )
+    if (receiver_name not in body) and (receiver_name not in subject):
+        body += f'<br/>{receiver_name}'
+
+    name = admin.pop('name', 'Your Host')
+    email = admin.get('user')
+
+    return (
+        emails
+        .html(
+            html=body,
+            subject=subject,
+            mail_from=(name, email),
+        )
+        .send(
+            to=sender_email,
+            smtp=admin,
+        )
+    )
+
+
+def run_and_email(
+        admin: dict,
+        address: dict,
+        excluded: list = None,
+        max_chains: int = 1,
+) -> Response:
+    """
+    Run generator and email sender
+
+    Args:
+        admin: email settings of the administrator, including
+               host - e.g., smtp.office365.com
+               port - e.g., 587
+               tls - True or False (must be False if ssl is True)
+               ssl - True or False (must be False if tls is True)
+               timeout - optional, default 10s
+               user - email user name
+               password - email password
+               subject - opitonal, default something silly
+               body - optional, default something silly as well
+        address: participants name and email addresses
+        excluded: mutually exclusive groups
+        max_chains: max number of chains
+
+    Returns:
+        list of email responses
+    """
+    while True:
+        pairs = gen_pairs(candidates=list(address.keys()), excluded=excluded)
+        if len(graph(pairs=pairs)) <= max_chains:
+            break
+
+    return Response(
+        pairs=pairs,
+        email=[
+            email_sender(
+                sender_email=address[sender],
+                receiver_name=receiver,
+                admin=admin,
+            )
+            for sender, receiver in pairs
+        ],
+    )
 
 
 def flatten(iterable):
